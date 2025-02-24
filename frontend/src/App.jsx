@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Terminal, Zap, Bug, Code2, Info, BookOpen, Rocket, Upload } from 'lucide-react';
+import Chat from "./Chat";
 
 function App() {
   const [code, setCode] = useState('// Paste your code here...');
