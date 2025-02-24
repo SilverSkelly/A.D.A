@@ -20,7 +20,7 @@ dotenv.config();
 const dbuser = process.env.dbUsername; //database username
 const dbpwd = process.env.dbPwd; //database password
 const dbconnection = process.env.dbConnection || ``; //database connection string with fake code
-const huggingfaceApiKey= process.env.huggingfaceHUB_API_KEY;
+const HUGGINGFACEHUB_API_KEY= process.env.HUGGINGFACEHUB_API_KEY;
 
 //Uncomment the following line to help debug any .env issues
 // console.log(`debug\n${dbuser}\n${dbpwd}\n${dbconn}`);
@@ -33,12 +33,12 @@ app.use(express.json());
 
 const local = true; // if false, it will call the Azure Link, which is pretty slow
 
-const deepseekUrl = local ? "http://localhost:11434" : "https://huggingface.co/deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct/tree/main"
+const deepseekUrl = local ? "http://localhost:11434" : "https://llama.delightfulwater-6fda5743.centralus.azurecontainerapps.io/"
 
 //Initialize the EmbedJS RAG object
 const ragApplication = await new RAGApplicationBuilder()
-.setModel(new HuggingFace({ modelName: "Deepseek-Coder 1.3v", baseUrl: deepseekUrl }))
-.setEmbeddingModel(new HuggingFaceEmbeddings({key: huggingfaceApiKey, model: 'Deepseek-Coder 1.3v', baseUrl: deepseekUrl }))
+.setModel(new HuggingFace({ modelName: "deepseek-ai/deepseek-coder-1.3b-instruct"}))
+.setEmbeddingModel(new HuggingFaceEmbeddings({key: HUGGINGFACEHUB_API_KEY, model: "deepseek-ai/deepseek-coder-1.3b-instruct"}))
 .setVectorDatabase(new HNSWDb())
 .build();
 
