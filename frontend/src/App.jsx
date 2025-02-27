@@ -1,19 +1,41 @@
 import React, { useState, useRef } from 'react';
 import { Terminal, Zap, Bug, Code2, Info, BookOpen, Rocket, Upload } from 'lucide-react';
-import Chat from "./Chat";
+import sendMessage from "./api.js";
 
 function App() {
-  const [code, setCode] = useState('// Paste your code here...');
+  const [code, setCode] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [fileName, setFileName] = useState('');
   const fileInputRef = useRef(null);
+  const [query, setQuery] = useState("");
+  const [messages, setMessages] = useState([]);
 
-  const handleDebug = () => {
+
+  const handleDebug = async (event) => {
     setIsAnalyzing(true);
     setTimeout(() => setIsAnalyzing(false), 2000);
+    event.preventDefault();
+    //create a message payload
+    const query = code;
+
+      try{
+
+        const data = await sendMessage(query);
+        console.log(data)
+
+        setMessages((prevMessages) => [
+            ...prevMessages,
+            {role: "User" ,content: query},
+            {role: "AI", content: data.content}
+        ]);
+        //clear the input field after sending the message
+        setQuery("");
+    }catch(error){
+        console.error("Error fetching chat resonse:", error);
+    };
   };
 
-  const handleFileUpload = (event) => {
+  const handleFileUpload = async (event) => {
     const file = event.target.files?.[0];
     if (file) {
       setFileName(file.name);
@@ -106,6 +128,7 @@ function App() {
             </div>
             <textarea
               value={code}
+              placeholder="// Please type your code here"
               onChange={(e) => setCode(e.target.value)}
               className="w-full h-48 bg-[#0a0b1e]/80 text-cyan-300 font-mono p-4 rounded border border-cyan-500/30 focus:border-fuchsia-400 focus:ring-1 focus:ring-fuchsia-400 outline-none resize-none"
             />
@@ -125,6 +148,7 @@ function App() {
                 </>
               )}
             </button>
+
           </div>
 
           {/* Output Display */}
@@ -144,6 +168,16 @@ function App() {
                   <span>Processing...</span>
                 </div>
               )}
+
+                <div>
+                  {
+                      messages.map((message, index) => (
+                          <div key={index}> 
+                              <strong>{message.role}:</strong> {message.content}
+                          </div>
+                      ))
+                  }
+              </div>
             </div>
           </div>
         </section>

@@ -176,3 +176,5 @@ bun.lockb
 
 # to hide env file
 .env
+
+package-lock.json

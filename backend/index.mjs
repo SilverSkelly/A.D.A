@@ -8,6 +8,7 @@ import { MongoDb } from '@llm-tools/embedjs-mongodb';
 import { HNSWDb } from '@llm-tools/embedjs-hnswlib';
 import { HuggingFace } from '@llm-tools/embedjs-huggingface';
 import { HuggingFaceEmbeddings } from '@llm-tools/embedjs-huggingface';
+import CORS from 'cors';
 
 //Express Library builds the HTTP Server
 import express from "express";
@@ -21,7 +22,7 @@ dotenv.config();
 //Assign the .env values to variables we can use
 const dbuser = process.env.dbUsername; //database username
 const dbpwd = process.env.dbPwd; //database password
-const dbconnection = process.env.dbConnection || ``; //database connection string with fake code
+const dbconnection = process.env.dbConnection || ``; //database connection string
 const HUGGINGFACEHUB_API_KEY = process.env.HUGGINGFACEHUB_API_KEY;
 
 //Uncomment the following line to help debug any .env issues
@@ -32,6 +33,7 @@ const app = express();
 const port = 3000;
 //enable to app to send/receive json
 app.use(express.json());
+app.use(CORS());
 
 const local = true; // if false, it will call the Azure Link, which is pretty slow
 
@@ -68,60 +70,31 @@ app.post('/ask', async (req, res) => {
         }]
     } 
     */
-   let client = new MongoClient(dbconnection);
-   await client.connect();
+    console.log(req.body)
+    let client = new MongoClient(dbconnection);
+    await client.connect();
    
-   console.log('Connected successfully to server');
+    console.log('Connected successfully to server');
 
-   // Evol data
-   const evol_db = client.db('Evol80k'); //specify database
-   const evol_collection = evol_db.collection('evol80k'); //specify collection
-   const evol_data = await evol_collection.find().toArray(); //
+    // Evol data
+    const evol_db = client.db('Evol80k'); //specify database
+    const evol_collection = evol_db.collection('evol80k'); //specify collection
+    const evol_data = await evol_collection.find().toArray(); //
    
-   // Unreal Data
-   const unreal_db = client.db('UnrealCode');
-   const unreal_collection = unreal_db.collection('unreal_code_data');
-   const unreal_data = await unreal_collection.find().toArray();
+    // Unreal Data
+    const unreal_db = client.db('UnrealCode');
+    const unreal_collection = unreal_db.collection('unreal_code_data');
+    const unreal_data = await unreal_collection.find().toArray();
 
-
-   await ragApplication.addLoader(new JsonLoader({object: evol_data}));
-   await ragApplication.addLoader(new JsonLoader({object: unreal_data}));
+    await ragApplication.addLoader(new JsonLoader({object: evol_data}));
+    await ragApplication.addLoader(new JsonLoader({object: unreal_data}));
    
-   console.log('thank you, let me review the resources you provided');
-    
-   //This loads in a variety of resources. Docs: https://llm-tools.mintlify.app/components/data-sources/overview
-   req.body.sources.forEach(async (source) => {
-       if (source.type == 'pdf') {
-           await ragApplication.addLoader(new PdfLoader({ filePathOrUrl: source.link }))
-           
-       } else if (source.type == 'web') {
-           await ragApplication.addLoader(new WebLoader({ urlOrContent: urlencoded.link }))
-
-       } else if (source.type == 'csv') {
-           await ragApplication.addLoader(new CsvLoader({ filePathOrUrl: source.link }))
-
-       } else if (source.type == 'json') {
-           //query database for data
-           //returned info would be in JSON format and loaded for response
-           let client = new MongoClient(dbconnection);
-           await client.connect();
-           console.log('Connected successfully to server');
-           const db = client.db(''); //specify database
-           const collection = db.collection(''); //specify collection
-           const results = await collection.find(); //aggregate 
-           await ragApplication.addLoader(new JsonLoader({object: results}));
-           console.log('resource loaded: ');
-           console.log('results');
-       }
-   });
-   console.log('now let me process this, one moment please...');
-   //Ask the AI model your question
-   const result = await ragApplication.query(req.body.query);
-   //Send the results back
-   res.send(result);
+    console.log('now let me process this, one moment please...');
+    //Ask the AI model your question
+    const result = await ragApplication.query(req.body.query);
+    //Send the results back
+    res.send(result);
 });
-
-    //console.log(req.body); //uncomment for debugging purposes
 
 
 //start the application
