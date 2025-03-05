@@ -9,6 +9,9 @@ import { HNSWDb } from '@llm-tools/embedjs-hnswlib';
 import { HuggingFace } from '@llm-tools/embedjs-huggingface';
 import { HuggingFaceEmbeddings } from '@llm-tools/embedjs-huggingface';
 import CORS from 'cors';
+import multer from 'multer';
+// import upload from './uploadfiles.mjs';
+import parseLargeUProject from './uploadfiles.mjs';
 
 //Express Library builds the HTTP Server
 import express from "express";
@@ -16,6 +19,7 @@ import express from "express";
 import { MongoClient } from 'mongodb';
 //dotenv enables the app to read environment variables
 import dotenv from 'dotenv';
+// import { fstat } from 'fs-extra';
 //This loads the .env file and system environment variables into process.env
 dotenv.config();
 
@@ -24,6 +28,21 @@ const dbuser = process.env.dbUsername; //database username
 const dbpwd = process.env.dbPwd; //database password
 const dbconnection = process.env.dbConnection || ``; //database connection string
 const HUGGINGFACEHUB_API_KEY = process.env.HUGGINGFACEHUB_API_KEY;
+
+var upload = multer({storage :storage});
+
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        /**
+         * @param {function} cb: callback function
+         */
+        cb(null, "uploads")
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        cb(null, file.fieldname + '-' + uniqueSuffix)
+      }
+});
 
 //Uncomment the following line to help debug any .env issues
 // console.log(`debug\n${dbuser}\n${dbpwd}\n${dbconn}`);
@@ -48,6 +67,25 @@ const ragApplication = await new RAGApplicationBuilder()
 }))
 .build();
 
+// console.log(typeof upload.array);
+
+let client = new MongoClient(dbconnection);
+await client.connect();
+// Evol data
+
+const evol_db = client.db('Evol80k'); //specify database
+const evol_collection = evol_db.collection('evol80k'); //specify collection
+const evol_data = await evol_collection.find().toArray(); //
+
+// Unreal Data
+const unreal_db = client.db('UnrealCode');
+const unreal_collection = unreal_db.collection('unreal_code_data');
+const unreal_data = await unreal_collection.find().toArray();
+
+await ragApplication.addLoader(new JsonLoader({object: evol_data}));
+await ragApplication.addLoader(new JsonLoader({object: unreal_data}));
+
+await client.close()
 
 
 const greetings = "Hello, I'm your Unreal Debugger Assistant!";
@@ -57,6 +95,27 @@ console.log(greetings);
 app.get("/", async (req, res) => {
     res.send(greetings);
   });
+
+  //route to handle file upload
+// app.post('upload', upload.single(file), async (req, res, next) => {
+//   //TODO
+  
+//   res.send(`file uploaded: ${req.file}`) 
+// })
+
+app.post("/upload-multiple", upload.array("files", 5) , async function (req, res, next){
+  const stringified_Files = []
+  
+  req.files.forEach(file => {
+    const project = parseLargeUProject(req, file);
+    const projectString = JSON.stringify(project);
+    stringified_Files.push(projectString)
+  })
+
+
+  ragApplication.query(` ${req.body.query} for the following array of files: ${JSON.stringify(stringified_Files)}`);
+  res.send(`File uploaded: ${req.files.length} files.`);
+});
 
 app.post('/ask', async (req, res) => {
 
@@ -71,23 +130,8 @@ app.post('/ask', async (req, res) => {
     } 
     */
     console.log(req.body)
-    let client = new MongoClient(dbconnection);
-    await client.connect();
    
     console.log('Connected successfully to server');
-
-    // Evol data
-    const evol_db = client.db('Evol80k'); //specify database
-    const evol_collection = evol_db.collection('evol80k'); //specify collection
-    const evol_data = await evol_collection.find().toArray(); //
-   
-    // Unreal Data
-    const unreal_db = client.db('UnrealCode');
-    const unreal_collection = unreal_db.collection('unreal_code_data');
-    const unreal_data = await unreal_collection.find().toArray();
-
-    await ragApplication.addLoader(new JsonLoader({object: evol_data}));
-    await ragApplication.addLoader(new JsonLoader({object: unreal_data}));
    
     console.log('now let me process this, one moment please...');
     //Ask the AI model your question

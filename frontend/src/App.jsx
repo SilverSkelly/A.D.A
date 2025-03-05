@@ -71,16 +71,16 @@ function App() {
         <header className="neon-box py-3">
           <div className="flex items-center justify-center">
             <Terminal className="w-6 h-6 mr-2 text-cyan-400" />
-            <h1 className="text-2xl font-bold neon-text">A.G.A</h1>
+            <h1 className="text-2xl font-bold neon-text">A.D.A</h1>
           </div>
         </header>
 
         {/* Intro Section */}
         <section className="neon-box space-y-4">
-          <h2 className="text-xl font-mono text-center neon-text mb-4">Welcome to the Future of Unreal Engine Debugging</h2>
+          <h2 className="text-xl font-mono text-center neon-text mb-4">Welcome to the Future of Debugging</h2>
           <div className="space-y-3 text-center">
             <p className="text-cyan-300 leading-relaxed">
-              A.G.A (artificial Game Assistant) is your advanced AI-powered debugging assistant, designed to analyze, optimize, and fix code with unprecedented accuracy.
+              A.D.A (Artificial Debugging Assistant) is your advanced AI-powered debugging assistant, designed to analyze, optimize, and fix code with unprecedented accuracy.
             </p>
             <p className="text-fuchsia-400/90 leading-relaxed">
               Simply paste your code or upload a file, and our AI will identify issues, suggest improvements, and provide detailed explanations for each recommendation.
@@ -90,7 +90,7 @@ function App() {
                 <p className="text-cyan-300">✓ Error Detection</p>
               </div>
               <div className="bg-cyan-500/10 rounded-lg p-3">
-                <p className="text-cyan-300">✓ Performance Optimization</p>
+                <p className="text-cyan-300">✓ Game Development Specialization</p>
               </div>
               <div className="bg-cyan-500/10 rounded-lg p-3">
                 <p className="text-cyan-300">✓ Best Practice Suggestions</p>
@@ -113,7 +113,7 @@ function App() {
                   ref={fileInputRef}
                   onChange={handleFileUpload}
                   className="hidden"
-                  accept=".js,.jsx,.ts,.tsx,.py,.java,.cpp,.c,.cs"
+                  accept=".js,.jsx,.ts,.tsx,.py,.java,.cpp,.c,.cs,.json,.c++,.c#"
                 />
                 <button
                   onClick={handleUploadClick}
