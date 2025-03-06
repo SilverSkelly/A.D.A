@@ -9,27 +9,38 @@ function App() {
   const fileInputRef = useRef(null);
   const [query, setQuery] = useState("");
   const [messages, setMessages] = useState([]);
+  const [status, setStatus] = useState("");
 
 
   const handleDebug = async (event) => {
     setIsAnalyzing(true);
-    setTimeout(() => setIsAnalyzing(false), 2000);
+    setTimeout(() => setIsAnalyzing(), 20000);
     event.preventDefault();
     //create a message payload
     const query = code;
 
-      try{
+    setIsAnalyzing(true);
 
+    setStatus("Connecting to servers...")
+
+      try{
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        setStatus("Analyzing code structure...");
         const data = await sendMessage(query);
         console.log(data)
 
+        setStatus("Generating recommendations...");
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
         setMessages((prevMessages) => [
             ...prevMessages,
-            {role: "User" ,content: query},
+            {role: "User" , content: query},
             {role: "AI", content: data.content}
         ]);
         //clear the input field after sending the message
         setQuery("");
+        setStatus("Completed Evalution")
     }catch(error){
         console.error("Error fetching chat resonse:", error);
     };
@@ -51,6 +62,7 @@ function App() {
   const handleUploadClick = () => {
     fileInputRef.current?.click();
   };
+
 
   return (
     <div className="min-h-screen relative">
@@ -77,7 +89,7 @@ function App() {
 
         {/* Intro Section */}
         <section className="neon-box space-y-4">
-          <h2 className="text-xl font-mono text-center neon-text mb-4">Welcome to the Future of Unreal Engine Debugging</h2>
+          <h2 className="text-xl font-mono text-center neon-text mb-4">Welcome to the Future of Debugging</h2>
           <div className="space-y-3 text-center">
             <p className="text-cyan-300 leading-relaxed">
               A.G.A (artificial Game Assistant) is your advanced AI-powered debugging assistant, designed to analyze, optimize, and fix code with unprecedented accuracy.
@@ -87,10 +99,10 @@ function App() {
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 text-sm">
               <div className="bg-cyan-500/10 rounded-lg p-3">
-                <p className="text-cyan-300">✓ Error Detection</p>
+                <p className="text-cyan-300">✓ Detailed data</p>
               </div>
               <div className="bg-cyan-500/10 rounded-lg p-3">
-                <p className="text-cyan-300">✓ Performance Optimization</p>
+                <p className="text-cyan-300">✓ Specialization in Unreal Engine 5</p>
               </div>
               <div className="bg-cyan-500/10 rounded-lg p-3">
                 <p className="text-cyan-300">✓ Best Practice Suggestions</p>
@@ -155,13 +167,10 @@ function App() {
           <div className="neon-box">
             <div className="flex items-center space-x-2 mb-4">
               <Terminal className="w-5 h-5 text-fuchsia-400" />
-              <span className="font-mono text-fuchsia-400">Output.debug</span>
+              <span className="font-mono text-cyan-400">Output.debug</span>
             </div>
             <div className="font-mono text-sm space-y-2">
-              <p className="text-cyan-400">{'>'} Initializing debug sequence...</p>
-              <p className="text-fuchsia-400">{'>'} Scanning for common patterns...</p>
-              <p className="text-cyan-400">{'>'} Analyzing code structure...</p>
-              <p className="text-fuchsia-400">{'>'} Generating recommendations...</p>
+              <p className="text-fuchsia-400">{'>'} {status} </p>
               {isAnalyzing && (
                 <div className="flex items-center space-x-2 text-cyan-300">
                   <span className="animate-pulse">▋</span>
@@ -195,7 +204,7 @@ function App() {
             <div className="flex flex-col items-center text-center space-y-3">
               <BookOpen className="w-8 h-8 text-cyan-400" />
               <h3 className="font-mono text-fuchsia-400">About me</h3>
-              <p className="text-cyan-300/80">My reasoning for making this</p>
+              <p className="text-cyan-300/80">Reasonings for creation</p>
             </div>
           </div>
           <div className="neon-box">
