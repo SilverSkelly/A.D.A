@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/80d8783b-4e41-4842-9fec-7a4d62b72371/resourceGroups/ada-debugger/providers/Microsoft.Web/sites/ada-debugger",
+    "appService.deploySubpath": "."
+}

@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Terminal, Zap, Bug, Code2, Info, BookOpen, Rocket, Upload } from 'lucide-react';
 import sendMessage from "./api.js";
+import {Dropdown} from 'flowbite';
 
 function App() {
   const [code, setCode] = useState('');
@@ -61,6 +62,35 @@ function App() {
 
   const handleUploadClick = () => {
     fileInputRef.current?.click();
+  };
+  
+  const Dropdown = ({ title, items }) => {
+    const [isOpen, setIsOpen] = useState(false);
+  
+    return (
+      <div className="relative">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="neon-box py-1 w-full font px-3 rounded-md focus:outline-none"
+        >
+          {title}
+        </button>
+
+        {isOpen && (
+          <div className="mt-1 rounded-md">
+            <ul className="py-2">
+              {items.map((item, index) => (
+                <li key={index}>
+                  <a href="#" className="block px-1 py-2">
+                    {item}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    );
   };
 
 
@@ -219,10 +249,10 @@ function App() {
         {/* Footer */}
         <footer className="neon-box">
           <div className="flex justify-between items-center text-xs font-mono">
-            <div className="flex space-x-4">
-              <a href="#" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">Contact</a>
-              <a href="#" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">Resources</a>
-              <a href="#" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">Legal</a>
+            <div className="flex space-x-3">
+             <Dropdown title="Contact" items={[<a href="#" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">Email</a>,<a href="#" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">Social</a>, <a href="#" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">???</a>]} />
+             <Dropdown title="Resources" items={[<a href="#" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">Email</a>,<a href="#" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">Social</a>, <a href="#" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">???</a>]} />
+             <Dropdown title="Legal" items={[<a href="#" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">Email</a>,<a href="#" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">Social</a>, <a href="#" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">???</a>]} />
             </div>
             <span className="text-fuchsia-400">©2025</span>
           </div>
