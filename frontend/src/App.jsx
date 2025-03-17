@@ -113,19 +113,19 @@ function App() {
         <header className="neon-box py-3">
           <div className="flex items-center justify-center">
             <Terminal className="w-6 h-6 mr-2 text-cyan-400" />
-            <h1 className="text-2xl font-bold neon-text">A.G.A</h1>
+            <h1 className="text-2xl font-bold neon-text">A.D.A</h1>
           </div>
         </header>
 
         {/* Intro Section */}
         <section className="neon-box space-y-4">
-          <h2 className="text-xl font-mono text-center neon-text mb-4">Welcome to the Future of Debugging</h2>
+          <h2 className="text-xl font-mono text-center neon-text mb-4">Welcome to the Future of Video Game Debugging</h2>
           <div className="space-y-3 text-center">
             <p className="text-cyan-300 leading-relaxed">
-              A.G.A (artificial Game Assistant) is your advanced AI-powered debugging assistant, designed to analyze, optimize, and fix code with unprecedented accuracy.
+              A.D.A (Artificial Debugger Assistant) is your advanced AI-powered debugging assistant, designed to analyze, optimize, and fix code with unprecedented accuracy.
             </p>
             <p className="text-fuchsia-400/90 leading-relaxed">
-              Simply paste your code or upload a file, and our AI will identify issues, suggest improvements, and provide detailed explanations for each recommendation.
+              Simply paste your code, question, or upload a file, and our AI will identify issues, suggest improvements, and provide detailed explanations for each recommendation.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 text-sm">
               <div className="bg-cyan-500/10 rounded-lg p-3">
@@ -226,22 +226,22 @@ function App() {
           <div className="neon-box">
             <div className="flex flex-col items-center text-center space-y-3">
               <Info className="w-8 h-8 text-cyan-400" />
-              <h3 className="font-mono text-fuchsia-400">User Guide</h3>
-              <p className="text-cyan-300/80">Learn how to get the most out of our debugging tools</p>
+              <h3 className="font-mono text-fuchsia-400">About Creator</h3>
+              <p className="text-cyan-300/80">As a passionate game developer transitioning into the industry, I created this Unreal Engine debugger website to streamline troubleshooting and assist new developers trying to learn Development. Debugging can be time-consuming and hard to understand, so my goal is to provide a user-friendly resource that simplifies the overall development experience and help beginners learn some of the basics of programming</p>
             </div>
           </div>
           <div className="neon-box">
             <div className="flex flex-col items-center text-center space-y-3">
               <BookOpen className="w-8 h-8 text-cyan-400" />
-              <h3 className="font-mono text-fuchsia-400">About me</h3>
-              <p className="text-cyan-300/80">Reasonings for creation</p>
+              <h3 className="font-mono text-fuchsia-400">User Guide</h3>
+              <p className="text-cyan-300/80">"To use a the A.D.A website, paste your code and or question into the editor. Click the "ANALYZE CODE" button to identify prompt. The site will analyze prompt, provide feedback, and suggest possible solutions. While A.D.A can answer a multitude of questions, It is specialized for UE5 develoment. ADA also must not excede 4096 characters. Additionally AI is a powerful tool that should used with care; The goal of ADA is ment to help you solve bugs and code you can't get passed and help you learn software, So don't overrely on it and let it become a crutch. Check the Help or Resources tab at the bottom of the page for additional support."</p>
             </div>
           </div>
           <div className="neon-box">
             <div className="flex flex-col items-center text-center space-y-3">
               <Rocket className="w-8 h-8 text-cyan-400" />
               <h3 className="font-mono text-fuchsia-400">Future Updates</h3>
-              <p className="text-cyan-300/80">Upcoming features</p>
+              <p className="text-cyan-300/80">Future plans of the website are to enhance the platform with three key features: file upload, allowing users to input their own data securely; accessibility settings, including customizable UI options and screen reader support for an inclusive experience; and extra datasets, expanding available data for deeper insights. These updates aim to improve usability, accessibility, and data versatility. Stay tuned for more details!</p>
             </div>
           </div>
         </section>
@@ -250,9 +250,9 @@ function App() {
         <footer className="neon-box">
           <div className="flex justify-between items-center text-xs font-mono">
             <div className="flex space-x-3">
-             <Dropdown title="Contact" items={[<a href="#" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">Email</a>,<a href="#" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">Social</a>, <a href="#" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">???</a>]} />
-             <Dropdown title="Resources" items={[<a href="#" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">Email</a>,<a href="#" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">Social</a>, <a href="#" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">???</a>]} />
-             <Dropdown title="Legal" items={[<a href="#" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">Email</a>,<a href="#" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">Social</a>, <a href="#" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">???</a>]} />
+             <Dropdown title="Contact" items={[<a className="text-cyan-400 hover:text-fuchsia-400 transition-colors">@jamesh.h.197442@gmail.com</a>,<a href="https://www.linkedin.com/in/james-hammett-589503330/" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">Linkedin</a>, <a href="https://bsky.app/profile/silverskel.bsky.social" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">BlueSky</a>]} />
+             <Dropdown title="Help" items={[<a href="#" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">Documentation</a>,<a href="https://github.com/SilverSkelly/A.D.A" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">GitHub</a>,<a href="https://www.deepseek.com/" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">DeepSeek Forums</a>]} />
+             <Dropdown title="Resources" items={[<a href="https://forums.unrealengine.com/categories?tag=unreal-engine" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">Unreal Engine Forums</a>,<a href="https://discord.com/invite/unrealsource" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">Discord</a>, <a href="#" className="text-cyan-400 hover:text-fuchsia-400 transition-colors">Recomended Youtube List</a>]} />
             </div>
             <span className="text-fuchsia-400">©2025</span>
           </div>
