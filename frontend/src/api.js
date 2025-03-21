@@ -1,6 +1,7 @@
+const api = import.meta.env.VITE_api;
 const sendMessage = async (query) => {
     try {
-        const response = await fetch('http://localhost:3000/ask', {
+        const response = await fetch(`${api}/ask`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
